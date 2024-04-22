@@ -6,10 +6,13 @@ def calculate_summary_statistics(file_name):
     if data is None:
         return None  # Handle data loading error
     
-    # Check if 'recovered' column exists in the DataFrame
-    if 'recovered' not in data.columns:
-        print("Error: 'recovered' column not found in the dataset.")
-        return None  # Handle missing column error
+    required_columns = ['date', 'country', 'confirmed_cases', 'deaths', 'recovered']
+        
+    # Check if all required columns exist in dataset
+    missing_columns = [col for col in required_columns if col not in data.columns]
+    if missing_columns:
+        print(f"Error: Columns {', '.join(missing_columns)} not found in the dataset.")
+        return None  # Handle missing column/s error
     
     # Calculate summary statistics with error handling
     total_confirmed_cases = data['confirmed_cases'].sum()

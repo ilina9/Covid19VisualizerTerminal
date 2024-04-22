@@ -1,5 +1,5 @@
 import pandas as pd
-
+#just loading the data here
 def load_data(file_name):
     try:
         data = pd.read_csv(file_name)
@@ -13,4 +13,4 @@ def load_data(file_name):
 
 data = load_data('covid_data.csv')
 if data is not None:  
-    print('Covid data loaded')
+    print('Covid data loaded') #print that the specific file is loaded
