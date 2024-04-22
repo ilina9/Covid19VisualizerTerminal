@@ -1,64 +1,16 @@
-import matplotlib.pyplot as plt
+import tkinter as tk
+from tkinter import messagebox
 from data_loader import load_data
 import pandas as pd
 from scipy.stats import pearsonr
-
-
-def top_10_countries_least_cases(file_name):
-    data = load_data(file_name)
-    if data is None:
-        return None  # Handle data loading error
-    
-    # Aggregate data by country and calculate total confirmed cases
-    country_data = data.groupby('country')['confirmed_cases'].sum().nsmallest(10)
-    
-    # Plotting the top 10 countries with the least cases
-    plt.figure(figsize=(10, 6))
-    plt.bar(country_data.index, country_data.values, color='blue')
-    
-    plt.xlabel('Country')
-    plt.ylabel('Confirmed Cases')
-    plt.title('Top 10 Countries with the Least Confirmed Cases')
-    plt.xticks(rotation=45)
-    
-    plt.tight_layout()
-    plt.show()
-
-# Example usage
-top_10_countries_least_cases('covid_data.csv')
-
-def top_10_countries_least_deaths(file_name):
-    data = load_data(file_name)
-    if data is None:
-        return None  # Handle data loading error
-    
-    # Aggregate data by country and calculate total deaths
-    country_data = data.groupby('country')['deaths'].sum().nsmallest(10)
-    
-    # Plotting the top 10 countries with the least deaths
-    plt.figure(figsize=(10, 6))
-    plt.bar(country_data.index, country_data.values, color='red')
-    
-    plt.xlabel('Country')
-    plt.ylabel('Deaths')
-    plt.title('Top 10 Countries with the Least Confirmed Deaths')
-    plt.xticks(rotation=45)
-    
-    plt.tight_layout()
-    plt.show()
-
-# Example usage
-top_10_countries_least_deaths('covid_data.csv')
-
-import pandas as pd
-from scipy.stats import pearsonr
+from tabulate import tabulate
 
 def check_correlation_least_cases_deaths(file_name, significance_level=0.05):
     data = load_data(file_name)
     if data is None:
-        return None  # Handle data loading error
+        return None, None 
     
-    # Select the top 10 countries with the least cases and least deaths
+    # Select top 10 countries with the least cases and least deaths
     top_10_least_cases = data.groupby('country')['confirmed_cases'].sum().nsmallest(10).index
     top_10_least_deaths = data.groupby('country')['deaths'].sum().nsmallest(10).index
     
@@ -81,9 +33,32 @@ def check_correlation_least_cases_deaths(file_name, significance_level=0.05):
     
     return correlation_matrix, significance_matrix
 
+# Format matrices as tabular string using tabulate
+def format_matrices_as_tabular(correlation_matrix, significance_matrix, significance_level=0.05):
+    # Filter non-significant correlations
+    significant_correlations = significance_matrix[significance_matrix < significance_level]
+    correlated_countries = significant_correlations.index.intersection(significant_correlations.columns)
+    
+    # Filter based on countries
+    filtered_correlation_matrix = correlation_matrix.loc[correlated_countries, correlated_countries]
+    filtered_significance_matrix = significance_matrix.loc[correlated_countries, correlated_countries]
+    
+    # Convert to tabular format
+    correlation_table = tabulate(filtered_correlation_matrix, headers='keys', tablefmt='grid')
+    significance_table = tabulate(filtered_significance_matrix, headers='keys', tablefmt='grid')
+
+    # Combine the tables into a single formatted string
+    formatted_str = f"Correlation Matrix:\n\n{correlation_table}\n\n"
+    formatted_str += f"Statistically Significant Correlations:\n\n{significance_table}"
+
+    return formatted_str
+
 
 correlation_matrix_least, significance_matrix_least = check_correlation_least_cases_deaths('covid_data.csv')
-print("Correlation Matrix between Top 10 Countries with Least Cases and Least Deaths:")
-print(correlation_matrix_least)
-print("\nStatistical Significance Matrix:")
-print(significance_matrix_least)
+formatted_message = format_matrices_as_tabular(correlation_matrix_least, significance_matrix_least)
+
+# Create tk window and show the message box
+window = tk.Tk()
+window.withdraw()  # Hide the main window
+messagebox.showinfo("Correlation and Significance Results", formatted_message)
+window.mainloop()
