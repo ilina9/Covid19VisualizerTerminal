@@ -16,14 +16,13 @@ if __name__ == "__main__":
     while True:
         main_menu()
         choice = input("\nEnter your choice (1-11): ")
-
         if choice == "1":
-            from data_analysis import calculate_summary_statistics
             from data_loader import load_data
+            from data_analysis import calculate_summary_statistics
             file_name = "covid_data.csv"
             data = load_data(file_name)
             if data is not None:            
-                summary_stats = calculate_summary_statistics(data)
+                summary_stats = calculate_summary_statistics(file_name)
                 print("\nSummary Statistics:")
                 print(summary_stats)
         elif choice == "2":
@@ -32,56 +31,51 @@ if __name__ == "__main__":
             visualize_summary_statistics(file_name)
         elif choice == "3":
             from top_10_countries_plot import top_10_countries_plot
-            from data_loader import load_data
             file_name = "covid_data.csv"
-            data = load_data(file_name)
-            if data is not None:
-                top_10_countries_plot(data)
+            top_10_countries_plot(file_name)
         elif choice == "4":
             from top_10_countries_least_cases import top_10_countries_least_cases
-            from data_loader import load_data
             file_name = "covid_data.csv"
-            data = load_data(file_name)
-            if data is not None:
-                top_10_countries_least_cases(data)
+            top_10_countries_least_cases(file_name)
         elif choice == "5":
             from top_10_countries_deaths import top_10_countries_confirmed_deaths
-            from data_loader import load_data
             file_name = "covid_data.csv"
-            data = load_data(file_name)
-            if data is not None:
-                top_10_countries_confirmed_deaths(data)
+            top_10_countries_confirmed_deaths(file_name)
         elif choice == "6":
             from top_10_countries_least_deaths import top_10_countries_least_deaths
-            from data_loader import load_data
             file_name = "covid_data.csv"
-            data = load_data(file_name)
-            if data is not None:
-                top_10_countries_least_deaths(data)
+            top_10_countries_least_deaths(file_name)
         elif choice == "7":
             from top_10_countries_recoveries import top_10_countries_confirmed_recoveries
-            from data_loader import load_data
             file_name = "covid_data.csv"
-            data = load_data(file_name)
-            if data is not None:
-                top_10_countries_confirmed_recoveries(data)
+            top_10_countries_confirmed_recoveries(file_name)
         elif choice == "8":
             from correlation_most_cases import check_correlation_and_significance
-            from data_loader import load_data
             file_name = "covid_data.csv"
-            data = load_data(file_name)
-            if data is not None:
-                check_correlation_and_significance(data)
+            check_correlation_and_significance(file_name)
         elif choice == "9":
-            from correlation_least_cases import format_matrices_as_tabular
             from data_loader import load_data
             file_name = "covid_data.csv"
             data = load_data(file_name)
             if data is not None:
-                format_matrices_as_tabular(data)
+                from correlation_least_cases import format_matrices_as_tabular, check_correlation_least_cases_deaths
+                correlation_matrix, significance_matrix = check_correlation_least_cases_deaths(file_name)
+                formatted_message = format_matrices_as_tabular(correlation_matrix, significance_matrix)
+                print(formatted_message)
+
         elif choice == "10":
-            from country_data_search import show_country_data
-            show_country_data()
+            from country_data_search import visualize_country_data
+            file_name = "covid_data.csv"
+            while True:
+                option = input("Enter '1' to enter a country's name or '2' to go back to the main menu: ")
+                if option == "1":
+                    country_name_input = input("Enter the country name: ")
+                    visualize_country_data(file_name, country_name_input)
+                elif option == "2":
+                    break  # Exit the loop and go back to the main menu
+                else:
+                    print("Invalid option. Please enter '1' or '2'.")
+
         elif choice == "11":
             print("Exiting program.")
             exit()

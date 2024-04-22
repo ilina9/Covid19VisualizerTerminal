@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from data_loader import load_data
 
-def top_10_countries_least_cases_line_graph(file_name):
+def top_10_countries_least_cases(file_name):
     data = load_data(file_name)
     if data is None:
         return None
@@ -20,5 +20,4 @@ def top_10_countries_least_cases_line_graph(file_name):
     plt.grid(True)
     plt.show()
 
-# Example usage
-top_10_countries_least_cases_line_graph('covid_data.csv')
+top_10_countries_least_cases('covid_data.csv')

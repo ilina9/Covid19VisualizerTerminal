@@ -1,5 +1,3 @@
-import tkinter as tk
-from tkinter import messagebox
 from data_loader import load_data
 import pandas as pd
 from scipy.stats import pearsonr
@@ -42,7 +40,4 @@ def format_matrices_as_tabular(correlation_matrix, significance_matrix, signific
 correlation_matrix_least, significance_matrix_least = check_correlation_least_cases_deaths('covid_data.csv')
 formatted_message = format_matrices_as_tabular(correlation_matrix_least, significance_matrix_least)
 
-window = tk.Tk()
-window.withdraw()
-messagebox.showinfo("Correlation and Significance Results", formatted_message)
-window.mainloop()
+print(formatted_message)  # Display the formatted message without GUI

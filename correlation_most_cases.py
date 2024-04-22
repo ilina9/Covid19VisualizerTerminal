@@ -1,5 +1,3 @@
-import tkinter as tk
-from tkinter import messagebox
 from data_loader import load_data
 import pandas as pd
 from scipy.stats import pearsonr
@@ -34,9 +32,6 @@ def check_correlation_and_significance(file_name, significance_level=0.05):
     message = f"Correlation Matrix:\n\n{correlation_table}\n\n"
     message += f"Statistically Significant Correlations:\n\n{significant_table}"
 
-    window = tk.Tk()
-    window.withdraw()
-    messagebox.showinfo("Correlation and Significance Results", message)
-    window.mainloop()
-
+    print(message)  
+    
 check_correlation_and_significance('covid_data.csv')
