@@ -15,7 +15,7 @@ def visualize_summary_statistics(file_name):
         print(f"Error: Columns {', '.join(missing_columns)} not found in the dataset.")
         return None  # Handle missing column/s error
     
-    # Ensure 'date' column is parsed as datetime
+    # Make sure 'date' column is parsed as datetime
     data['date'] = pd.to_datetime(data['date'])
     
     # Aggregate data by date
@@ -25,7 +25,7 @@ def visualize_summary_statistics(file_name):
         'recovered': 'sum'
     }).reset_index()
     
-    # Plotting the data as a stacked bar chart
+    # Plot data as a stacked bar chart
     plt.figure(figsize=(12, 8))
     plt.bar(date_data['date'], date_data['recovered'], label='Recovered', color='green')
     plt.bar(date_data['date'], date_data['deaths'], bottom=date_data['recovered'], label='Deaths', color='red')

@@ -29,19 +29,14 @@ if __name__ == '__main__':
         file_name = "covid_data.csv"
         top_10_countries_confirmed_recoveries(file_name)
 
+
     def check_correlation_highest_cases():
         from correlation_most_cases import check_correlation_and_significance
         file_name = "covid_data.csv"
-        correlation_highest = check_correlation_and_significance(file_name)
-        if correlation_highest is not None:
-            # Create Tkinter window
-            window = tk.Tk()
-            window.title("Correlation data")
+        check_correlation_and_significance(file_name)
 
-            # Create label to display the correlation data
-            label = tk.Label(window, text=correlation_highest)
-            label.pack()
 
+    #Create GUI buttons for each function
     window = tk.Tk()
     window.title("COVID Data Analysis Tool")
 

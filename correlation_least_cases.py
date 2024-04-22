@@ -81,7 +81,7 @@ def check_correlation_least_cases_deaths(file_name, significance_level=0.05):
     
     return correlation_matrix, significance_matrix
 
-# Example usage
+
 correlation_matrix_least, significance_matrix_least = check_correlation_least_cases_deaths('covid_data.csv')
 print("Correlation Matrix between Top 10 Countries with Least Cases and Least Deaths:")
 print(correlation_matrix_least)

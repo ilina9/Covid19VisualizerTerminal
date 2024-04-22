@@ -9,7 +9,7 @@ def top_10_countries_confirmed_deaths(file_name):
     # Aggregate data by country and calculate total confirmed deaths
     country_data = data.groupby('country')['deaths'].sum().nlargest(10)
     
-    # Plotting the top 10 countries by confirmed deaths
+    # Plot the top 10 countries by confirmed deaths
     plt.figure(figsize=(10, 6))
     plt.bar(country_data.index, country_data.values, color='red')
     

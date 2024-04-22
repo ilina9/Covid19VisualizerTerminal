@@ -1,7 +1,9 @@
-import matplotlib.pyplot as plt
+import tkinter as tk
+from tkinter import messagebox
 from data_loader import load_data
 import pandas as pd
 from scipy.stats import pearsonr
+from tabulate import tabulate
 
 
 def check_correlation_and_significance(file_name, significance_level=0.05):
@@ -29,15 +31,19 @@ def check_correlation_and_significance(file_name, significance_level=0.05):
                 p_values.loc[col1, col2] = p_value
                 significance_matrix.loc[col1, col2] = p_value < significance_level
 
-    # Print correlation matrix
-    print("Correlation Matrix:")
-    print(correlation_matrix)
-    
-    # Print statistically significant correlations
+    # Format correlation matrix and significant correlations into tables
+    correlation_table = tabulate(correlation_matrix, headers='keys', tablefmt='grid')
     significant_correlations = p_values[p_values < significance_level]
-    if not significant_correlations.empty:
-        print("\nStatistically Significant Correlations:")
-        print(significant_correlations)
+    significant_table = tabulate(significant_correlations, headers='keys', tablefmt='grid') if not significant_correlations.empty else "No statistically significant correlations."
 
-# Example usage
+    # Prepare message for the message box
+    message = f"Correlation Matrix:\n\n{correlation_table}\n\n"
+    message += f"Statistically Significant Correlations:\n\n{significant_table}"
+
+    # Create tk window and show the message box
+    window = tk.Tk()
+    window.withdraw()  # Hide the main window
+    messagebox.showinfo("Correlation and Significance Results", message)
+    window.mainloop()
+
 check_correlation_and_significance('covid_data.csv')

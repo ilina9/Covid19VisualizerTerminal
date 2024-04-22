@@ -12,7 +12,7 @@ def top_10_countries_plot(file_name):
     # Select top 10 countries with highest confirmed cases count
     top_10_countries = country_data.nlargest(10, 'confirmed_cases')
     
-    # Plotting the top 10 countries
+    # Plot the top 10 countries
     plt.figure(figsize=(10, 6))
     plt.bar(top_10_countries['country'], top_10_countries['confirmed_cases'], color='blue')
     

@@ -4,20 +4,20 @@ from data_loader import load_data
 def calculate_summary_statistics(file_name):
     data = load_data(file_name)
     if data is None:
-        return None  # Handle data loading error
+        return None 
     
     required_columns = ['date', 'country', 'confirmed_cases', 'deaths', 'recovered']
         
-    # Check if all required columns exist in dataset
+    # check if all columns are in dataset
     missing_columns = [col for col in required_columns if col not in data.columns]
     if missing_columns:
         print(f"Error: Columns {', '.join(missing_columns)} not found in the dataset.")
-        return None  # Handle missing column/s error
+        return None  
     
-    # Calculate summary statistics with error handling
+    # Calculate summary statistics 
     total_confirmed_cases = data['confirmed_cases'].sum()
     total_deaths = data['deaths'].sum()
-    total_recoveries = data['recovered'].sum()  # Access 'recovered' column
+    total_recoveries = data['recovered'].sum()  
     
     try:
         fatality_rate = (total_deaths / total_confirmed_cases) * 100
