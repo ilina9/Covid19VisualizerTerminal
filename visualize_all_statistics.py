@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from data_loader import load_data
 
-def visualize_summary_statistics_line_graph(file_name):
+def visualize_summary_statistics(file_name):
     data = load_data(file_name)
     if data is None:
         return None   
@@ -36,4 +36,4 @@ def visualize_summary_statistics_line_graph(file_name):
     plt.tight_layout()
     plt.show()
 
-visualize_summary_statistics_line_graph('covid_data.csv')
+visualize_summary_statistics('covid_data.csv')
