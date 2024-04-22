@@ -1,36 +1,53 @@
-import matplotlib.pyplot as plt
+import tkinter as tk
+from tkinter import messagebox
 from data_loader import load_data
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 
 def visualize_country_data(file_name, country_name_input):
     data = load_data(file_name)
     if data is None:
-        return None  # Handle data loading error
-    
-    # Convert input country name to lowercase
+        return None 
     country_name = country_name_input.lower()
-    
     # Filter data for the specified country
     country_data = data[data['country'].str.lower() == country_name]
     
     if country_data.empty:
-        print(f"No data available for {country_name_input}.")
+        messagebox.showinfo("Country Data Unavailable", f"No data available for {country_name_input}.")
         return None
     
-    # Plotting the data for the specified country
-    plt.figure(figsize=(10, 6))
-    plt.plot(country_data['date'], country_data['confirmed_cases'], label='Confirmed Cases', color='blue')
-    plt.plot(country_data['date'], country_data['deaths'], label='Deaths', color='red')
-    plt.plot(country_data['date'], country_data['recovered'], label='Recoveries', color='green')
+    # Plot data for specified country
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(country_data['date'], country_data['confirmed_cases'], label='Confirmed Cases', color='blue')
+    ax.plot(country_data['date'], country_data['deaths'], label='Deaths', color='red')
+    ax.plot(country_data['date'], country_data['recovered'], label='Recoveries', color='green')
     
-    plt.xlabel('Date')
-    plt.ylabel('Count')
-    plt.title(f'COVID-19 Trajectory for {country_name_input}')
-    plt.xticks(rotation=45)
-    plt.legend()
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Count')
+    ax.set_title(f'COVID-19 Trajectory for {country_name_input}')
+    ax.legend()
     
-    plt.tight_layout()
-    plt.show()
+    canvas = FigureCanvasTkAgg(fig, master=window)
+    canvas.draw()
+    canvas.get_tk_widget().pack()
 
-# Example usage
-country_name_input = input("Enter a country's name: ")
-visualize_country_data('covid_data.csv', country_name_input.lower())  # Convert input to lowercase
+
+def show_country_data():
+    country_name_input = country_entry.get()
+    visualize_country_data('covid_data.csv', country_name_input)
+
+
+# Create GUI window
+window = tk.Tk()
+window.title("COVID Data Analysis Tool")
+
+# Entry field for country name input
+country_entry = tk.Entry(window, width=30)
+country_entry.pack()
+
+# Create and place button to visualize country data
+visualize_button = tk.Button(window, text="Visualize Country Data", font=("Arial", 14), height=2, command=show_country_data)
+visualize_button.pack()
+
+window.mainloop()
