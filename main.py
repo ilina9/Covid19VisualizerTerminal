@@ -9,13 +9,14 @@ def main_menu():
     print("7. Plot Top 10 Countries by Highest Confirmed Recoveries")
     print("8. Check Correlation for Highest Number of Cases, Deaths, and Recoveries")
     print("9. Check Correlation for Top 10 Countries with Lowest Number of Cases and Deaths")
-    print("10. Visualize Country Data")
-    print("11. Exit")
+    print("10. Check Coorrelation Plot for Confirmed Cases and Number of Deaths")
+    print("11. Visualize Country Data")
+    print("12. Exit")
 
 if __name__ == "__main__":
     while True:
         main_menu()
-        choice = input("\nEnter your choice (1-11): ")
+        choice = input("\nEnter your choice (1-12): ")
         if choice == "1":
             from data_loader import load_data
             from data_analysis import calculate_summary_statistics
@@ -62,8 +63,11 @@ if __name__ == "__main__":
                 correlation_matrix, significance_matrix = check_correlation_least_cases_deaths(file_name)
                 formatted_message = format_matrices_as_tabular(correlation_matrix, significance_matrix)
                 print(formatted_message)
-
         elif choice == "10":
+            from date_confirmed_cases import date_confirmed_cases_correlation
+            file_name = "covid_data.csv"
+            date_confirmed_cases_correlation(file_name)
+        elif choice == "11":
             from country_data_search import visualize_country_data
             file_name = "covid_data.csv"
             while True:
@@ -75,8 +79,7 @@ if __name__ == "__main__":
                     break  # Exit the loop and go back to the main menu
                 else:
                     print("Invalid option. Please enter '1' or '2'.")
-
-        elif choice == "11":
+        elif choice == "12":
             print("Exiting program.")
             exit()
         else:
