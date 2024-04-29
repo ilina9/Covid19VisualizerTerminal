@@ -64,7 +64,7 @@ if __name__ == "__main__":
                 formatted_message = format_matrices_as_tabular(correlation_matrix, significance_matrix)
                 print(formatted_message)
         elif choice == "10":
-            from date_confirmed_cases import date_confirmed_cases_correlation
+            from death_confirmed_cases import date_confirmed_cases_correlation
             file_name = "covid_data.csv"
             date_confirmed_cases_correlation(file_name)
         elif choice == "11":
