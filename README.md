@@ -1,4 +1,3 @@
-# DAVTC
 Homework project for Python course
 
 Issues to be fixed:
